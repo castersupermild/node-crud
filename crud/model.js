@@ -25,10 +25,6 @@ var Post = new mongoose.Schema({
 	created: {
 		type: String,
 		default: getDate
-	},
-	deleted: {
-		type: Boolean,
-		default: false
 	}
 });
 

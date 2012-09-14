@@ -1,17 +1,26 @@
 $(function() {
 	var $document = $(document);
+	// Socket.IO client
+	var sio = io.connect('http://localhost:3000');
+
+	// test
+	sio.on('message', function(data) {
+		alert(data.value);
+	});
 	
 	$document.on('submit', '#tweetForm', function(ev) {
 		var textarea = $('#tweetForm').find('textarea');
+		var content = textarea.val();
 		$.ajax({
 			url: '/tweet',
 			type: 'POST',
 			dataType: 'json',
-			data: {text: textarea.val()}
+			data: {text: content}
 		}).done(function(res) {
 			if (res.status === 'fail') {
 				return;
 			}
+			sio.emit('message', {value: content})
 			textarea.val('');
 			
 		}).fail(function() {
